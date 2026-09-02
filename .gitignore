@@ -1,0 +1,13 @@
+# Spotify OAuth token cache - contains refresh tokens, never commit
+.cache
+
+# Runtime state written by the detectors
+*.json
+
+# Recording artefacts
+*.mp3
+*.wav
+
+__pycache__/
+*.pyc
+.env
