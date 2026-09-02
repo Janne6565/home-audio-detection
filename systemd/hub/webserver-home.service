@@ -1,0 +1,18 @@
+# /etc/systemd/system/webserver-home.server
+
+[Unit]
+Description=Java Webserver running to controll my smart home
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5
+ExecStartPre=sudo docker pull janne5656/raspberrypi-device-hub:latest
+ExecStart=sudo docker run -p 9000:8000 --name home-device-hub -v /home/janne/home-configs:/app/config -v /home/janne/python_spotify_websocket_server:/home/janne/python_spotify_websocket_server janne5656/raspberrypi-device-hub:latest
+ExecStop=sudo docker stop home-device-hub
+ExecStopPost=sudo docker rm home-device-hub
+
+[Install]
+WantedBy=default.target

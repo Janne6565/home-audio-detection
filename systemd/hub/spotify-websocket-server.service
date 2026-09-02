@@ -1,0 +1,12 @@
+[Unit]
+Description=Spotify Websocket Server for Current playing album Cover
+
+[Service]
+WorkingDirectory=/home/janne/python_spotify_websocket_server/
+ExecStart=/usr/bin/python server.py
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

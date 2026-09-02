@@ -1,0 +1,15 @@
+[Unit]
+Description=Spotify Websocket Server for Current playing album Cover
+
+[Service]
+User=janne
+Group=1000
+Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
+WorkingDirectory=/home/janne/python_spotify_websocket_server/shazam
+ExecStart=/usr/bin/python shazam.py
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

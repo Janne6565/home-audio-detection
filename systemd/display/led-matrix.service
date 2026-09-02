@@ -1,0 +1,16 @@
+[Unit]
+Description=LED Matrix Display Service
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/janne/led-matrix
+ExecStart=/usr/bin/python3 /home/janne/led-matrix/main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

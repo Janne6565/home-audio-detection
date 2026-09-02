@@ -25,6 +25,9 @@ led-matrix/           display Pi, ~/led-matrix/
   main.py             drives the panel, PIL over rgbmatrix
 service-controller/   display Pi, ~/service-controller/
   main.py             starts and stops the panel service on remote command
+systemd/              the unit files, as deployed
+  hub/
+  display/
 ```
 
 Output shape, written to `../shazam.json`, `../yamaha.json`, `../spotify.json`:
@@ -75,14 +78,31 @@ so an occasional wrong match during the day is expected.
 
 ## Running them
 
-All five are systemd units. Two notes worth carrying over:
+Everything runs as a systemd unit; `systemd/` holds them as deployed, so the paths in
+them are the real ones (`/home/janne/...`) and need adjusting for another machine.
+
+Note that the units predate this repository and still expect the hub address to be
+baked into the scripts. Since it now comes from the environment, a fresh deployment
+needs it added, either as a drop-in or inline:
+
+```ini
+[Service]
+Environment=AUDIO_WEBSOCKET_URL=ws://your-hub:9000/audio
+```
+
+Two more notes worth carrying over:
 
 - Set `PYTHONUNBUFFERED=1` in the unit. Without it Python block-buffers stdout into the
   journal, and logs arrive in bursts up to half an hour late, which makes anything
   timing-related impossible to debug.
-- The units have no `After=network-online.target`. A detector that crashes at boot
-  because the network is not up yet burns through the systemd restart limit in about
-  five seconds and then stays dead until someone notices.
+- The four hub units have no `After=network-online.target`. A detector that crashes at
+  boot because the network is not up yet burns through the systemd restart limit in
+  about five seconds and then stays dead until someone notices. The two display units
+  do have it.
+- `spotify-websocket-server.service` is dead legacy: its `server.py` no longer exists,
+  the websocket server it once started now runs as the Docker container in
+  `webserver-home.service`. It is kept here only because it is still enabled on the
+  host and fails at every boot.
 
 ## Known issues
 
