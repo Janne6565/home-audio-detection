@@ -11,6 +11,15 @@ shows the album cover.
 | `yamaha.py` | a Yamaha MusicCast receiver over its Extended Control HTTP API | `requests` |
 | `spotify.py` | the Spotify Web API (currently playing) | `spotipy` |
 
+The layout mirrors the home directories on the Pis, so a path here is the path there.
+
+```
+detection/          on the hub, under ~/python_spotify_websocket_server/
+  shazam.py
+  yamaha.py
+  spotify.py
+```
+
 Output shape, written to `../shazam.json`, `../yamaha.json`, `../spotify.json`:
 
 ```json
